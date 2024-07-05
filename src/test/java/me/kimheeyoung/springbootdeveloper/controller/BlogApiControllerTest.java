@@ -1,6 +1,7 @@
 package me.kimheeyoung.springbootdeveloper.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import me.kimheeyoung.springbootdeveloper.domain.Article;
 import me.kimheeyoung.springbootdeveloper.dto.AddArticleRequest;
 import me.kimheeyoung.springbootdeveloper.repository.BlogRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,8 +60,8 @@ class BlogApiControllerTest {
         // when
         // 설정한 내용을 바탕으로 요청 전송
         ResultActions result = mockMvc.perform(post(url)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(requestBody));
+                .contentType(MediaType.APPLICATION_JSON_VALUE) // 요청 타입
+                .content(requestBody)); // 요청 본문
 
         // then
         result.andExpect(status().isCreated());

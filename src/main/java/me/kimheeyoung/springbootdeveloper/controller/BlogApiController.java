@@ -3,12 +3,16 @@ package me.kimheeyoung.springbootdeveloper.controller;
 import lombok.RequiredArgsConstructor;
 import me.kimheeyoung.springbootdeveloper.domain.Article;
 import me.kimheeyoung.springbootdeveloper.dto.AddArticleRequest;
+import me.kimheeyoung.springbootdeveloper.dto.ArticleResponse;
 import me.kimheeyoung.springbootdeveloper.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RequiredArgsConstructor // final이나 @NotNull이 붙은 필드의 생성자 추가
 @RestController // http responseBody에 객체 데이터를 json 형식으로 반환
@@ -25,5 +29,16 @@ public class BlogApiController {
         // 요청한 자원이 성공적으로 생성되었으며 저장된 블로그 글 정보를 응답 객체에 담아 전송
         return ResponseEntity.status(HttpStatus.CREATED) // 응답코드 201
                 .body(savedArticle);
+    }
+
+    @GetMapping("/api/articles")
+    public ResponseEntity<List<ArticleResponse>> findAllArticles() {
+        List<ArticleResponse> articles = blogService.findAll()
+                .stream()
+                .map(ArticleResponse::new)
+                .toList();
+
+        return ResponseEntity.ok()
+                .body(articles);
     }
 }
