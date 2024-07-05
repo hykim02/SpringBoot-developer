@@ -7,10 +7,7 @@ import me.kimheeyoung.springbootdeveloper.dto.ArticleResponse;
 import me.kimheeyoung.springbootdeveloper.service.BlogService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +17,7 @@ public class BlogApiController {
 
     private final BlogService blogService;
 
+    // 블로그 글 생성 api
     // http 메서드가 post일 때 전달받은 url과 동일하면 메서드로 매핑
     @PostMapping("/api/articles")
     // requestBody로 요청 본문 값 매핑
@@ -31,6 +29,7 @@ public class BlogApiController {
                 .body(savedArticle);
     }
 
+    // 블로그 글 전체 조회 api
     @GetMapping("/api/articles")
     public ResponseEntity<List<ArticleResponse>> findAllArticles() {
         List<ArticleResponse> articles = blogService.findAll()
@@ -40,5 +39,15 @@ public class BlogApiController {
 
         return ResponseEntity.ok()
                 .body(articles);
+    }
+
+    // 블로그 글 하나 조회 api
+    @GetMapping("/api/articles/{id}")
+    // URL 경로에서 값 추출
+    public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id) {
+        Article article = blogService.findById(id);
+
+        return ResponseEntity.ok()
+                .body(new ArticleResponse(article));
     }
 }
