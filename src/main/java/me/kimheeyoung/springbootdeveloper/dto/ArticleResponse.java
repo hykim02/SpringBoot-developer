@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.kimheeyoung.springbootdeveloper.domain.Article;
 
 @Getter
+// 블로그 글 목록 조회
 public class ArticleResponse {
 
     private final String title;
